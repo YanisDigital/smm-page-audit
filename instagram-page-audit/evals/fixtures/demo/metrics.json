@@ -1,0 +1,275 @@
+{
+  "generated_at": "2026-10-31T09:53:39+00:00",
+  "profile": {
+    "handle": "demo_coffee_lviv",
+    "followers": 4120,
+    "following": 812,
+    "posts_count": 214,
+    "highlight_count": 3,
+    "has_link": false,
+    "bio_length": 23
+  },
+  "posts_analyzed": 26,
+  "engagement": {
+    "er_followers_avg": 2.51,
+    "er_followers_median": 1.82,
+    "avg_likes": 99.58,
+    "avg_comments": 3.65,
+    "comments_to_likes": 3.67,
+    "by_type": {
+      "carousel": {
+        "count": 7,
+        "er_followers_avg": 1.79,
+        "avg_interactions": 73.57,
+        "avg_views": null
+      },
+      "image": {
+        "count": 9,
+        "er_followers_avg": 1.35,
+        "avg_interactions": 55.56,
+        "avg_views": null
+      },
+      "reel": {
+        "count": 10,
+        "er_followers_avg": 4.05,
+        "avg_interactions": 166.9,
+        "avg_views": 1965.9
+      }
+    }
+  },
+  "reels": {
+    "count": 10,
+    "avg_views": 1965.9,
+    "median_views": 1196.5,
+    "views_to_followers": 0.29,
+    "er_views_avg": 15.07,
+    "avg_duration_sec": 20.2
+  },
+  "format_mix": {
+    "reel": {
+      "count": 10,
+      "share_pct": 38.46
+    },
+    "image": {
+      "count": 9,
+      "share_pct": 34.62
+    },
+    "carousel": {
+      "count": 7,
+      "share_pct": 26.92
+    }
+  },
+  "cadence": {
+    "first_post": "2026-07-30",
+    "last_post": "2026-10-27",
+    "period_days": 88.71,
+    "posts_per_week": 1.89,
+    "avg_gap_days": 3.86,
+    "max_gap_days": 14.96,
+    "days_since_last_post": 3.02
+  },
+  "timing": {
+    "timezone_note": "Hours are in the timezone of the stored dates (UTC for in-page fetch).",
+    "by_weekday": {
+      "Mon": {
+        "posts": 3,
+        "er_avg": 5.53
+      },
+      "Tue": {
+        "posts": 2,
+        "er_avg": 1.81
+      },
+      "Wed": {
+        "posts": 5,
+        "er_avg": 1.53
+      },
+      "Thu": {
+        "posts": 3,
+        "er_avg": 1.26
+      },
+      "Fri": {
+        "posts": 7,
+        "er_avg": 2.0
+      },
+      "Sat": {
+        "posts": 3,
+        "er_avg": 3.67
+      },
+      "Sun": {
+        "posts": 3,
+        "er_avg": 2.83
+      }
+    },
+    "by_hour": {
+      "9": {
+        "posts": 1,
+        "er_avg": 2.31
+      },
+      "10": {
+        "posts": 2,
+        "er_avg": 1.88
+      },
+      "12": {
+        "posts": 1,
+        "er_avg": 1.84
+      },
+      "13": {
+        "posts": 4,
+        "er_avg": 1.85
+      },
+      "14": {
+        "posts": 2,
+        "er_avg": 2.33
+      },
+      "15": {
+        "posts": 2,
+        "er_avg": 0.97
+      },
+      "16": {
+        "posts": 3,
+        "er_avg": 1.22
+      },
+      "17": {
+        "posts": 3,
+        "er_avg": 2.88
+      },
+      "18": {
+        "posts": 5,
+        "er_avg": 4.88
+      },
+      "20": {
+        "posts": 1,
+        "er_avg": 2.5
+      },
+      "21": {
+        "posts": 1,
+        "er_avg": 1.8
+      },
+      "22": {
+        "posts": 1,
+        "er_avg": 2.21
+      }
+    }
+  },
+  "captions": {
+    "avg_length": 57.96,
+    "pct_with_cta": 26.92,
+    "pct_with_question": 23.08,
+    "pct_with_hashtags": 15.38,
+    "avg_hashtags": 0.31,
+    "top_hashtags": [
+      "#кавальвів",
+      "#lvivcoffee"
+    ],
+    "pct_empty": 11.54
+  },
+  "pinned_count": 2,
+  "collab_count": 1,
+  "top_posts": [
+    {
+      "url": "https://www.instagram.com/reel/DEMO003/",
+      "type": "reel",
+      "date": "2026-10-19T18:30:00+00:00",
+      "likes": 541,
+      "comments": 7,
+      "views": 10991,
+      "er_followers": 13.3,
+      "caption_start": "Бариста Оля показує латте-арт за 15 секунд. Повторите? 👇"
+    },
+    {
+      "url": "https://www.instagram.com/reel/DEMO015/",
+      "type": "reel",
+      "date": "2026-09-06T17:30:00+00:00",
+      "likes": 171,
+      "comments": 2,
+      "views": 1180,
+      "er_followers": 4.2,
+      "caption_start": "POV: ти прийшов за кавою, а пішов з трьома круасанами 🥐 Пишіть «КАВА» в дірект — надішлемо меню"
+    },
+    {
+      "url": "https://www.instagram.com/reel/DEMO007/",
+      "type": "reel",
+      "date": "2026-10-03T18:30:00+00:00",
+      "likes": 122,
+      "comments": 40,
+      "views": 486,
+      "er_followers": 3.93,
+      "caption_start": "POV: ти прийшов за кавою, а пішов з трьома круасанами 🥐 Пишіть «КАВА» в дірект — надішлемо меню"
+    },
+    {
+      "url": "https://www.instagram.com/reel/DEMO024/",
+      "type": "reel",
+      "date": "2026-08-01T14:30:00+00:00",
+      "likes": 140,
+      "comments": 8,
+      "views": 1370,
+      "er_followers": 3.59,
+      "caption_start": "Новий осінній лате з гарбузовою спецією 🎃 Вже в меню! #кавальвів #lvivcoffee"
+    },
+    {
+      "url": "https://www.instagram.com/reel/DEMO016/",
+      "type": "reel",
+      "date": "2026-08-22T18:30:00+00:00",
+      "likes": 139,
+      "comments": 5,
+      "views": 1213,
+      "er_followers": 3.5,
+      "caption_start": "Новий осінній лате з гарбузовою спецією 🎃 Вже в меню! #кавальвів #lvivcoffee"
+    }
+  ],
+  "bottom_posts": [
+    {
+      "url": "https://www.instagram.com/p/DEMO002/",
+      "type": "image",
+      "date": "2026-10-21T15:30:00+00:00",
+      "likes": 28,
+      "comments": 0,
+      "views": null,
+      "er_followers": 0.68,
+      "caption_start": "Ранок на Підвальній ☀️"
+    },
+    {
+      "url": "https://www.instagram.com/p/DEMO020/",
+      "type": "image",
+      "date": "2026-08-13T10:30:00+00:00",
+      "likes": 42,
+      "comments": 1,
+      "views": null,
+      "er_followers": 1.04,
+      "caption_start": "Наш десерт тижня — чизкейк з малиною"
+    },
+    {
+      "url": "https://www.instagram.com/p/DEMO014/",
+      "type": "image",
+      "date": "2026-09-09T14:30:00+00:00",
+      "likes": 42,
+      "comments": 2,
+      "views": null,
+      "er_followers": 1.07,
+      "caption_start": ""
+    },
+    {
+      "url": "https://www.instagram.com/p/DEMO006/",
+      "type": "image",
+      "date": "2026-10-07T17:30:00+00:00",
+      "likes": 46,
+      "comments": 1,
+      "views": null,
+      "er_followers": 1.14,
+      "caption_start": ""
+    },
+    {
+      "url": "https://www.instagram.com/p/DEMO005/",
+      "type": "carousel",
+      "date": "2026-10-09T16:30:00+00:00",
+      "likes": 47,
+      "comments": 0,
+      "views": null,
+      "er_followers": 1.14,
+      "caption_start": "Що обрати: еспресо чи фільтр? Розповідаємо в каруселі. А ви що п'єте зранку?"
+    }
+  ],
+  "warnings": [
+    "Posting gap of 14.96 days in the period."
+  ]
+}

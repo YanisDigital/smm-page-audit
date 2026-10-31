@@ -1,0 +1,23 @@
+{
+  "skill_name": "instagram-page-audit",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Проаналізуй сторінку https://www.instagram.com/<handle>/ — це кав'ярня у Львові, хочемо більше відвідувачів, бюджет на рекламу 300$ на місяць.",
+      "expected_output": "Mini-brief skipped or confirmed (answers already given); data collected read-only; metrics.py run; 3–5 web searches; report.html with all 10 sections, ≥10 Reels ideas, 4-week calendar, ads plan for 300 USD, no invented numbers.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Зроби аудит інсти @<handle> і стратегію просування на 3 місяці",
+      "expected_output": "Asks the one-block mini-brief, normalizes @handle to a profile URL, then full workflow; assumptions listed in the report if brief answers are missing.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Build a report from the demo data: evals/fixtures/demo (skip collection)",
+      "expected_output": "Runs metrics.py and build_report.py on the fixture; report.html builds without validation errors.",
+      "files": ["evals/fixtures/demo/page_data.json", "evals/fixtures/demo/report_content.json"]
+    }
+  ]
+}

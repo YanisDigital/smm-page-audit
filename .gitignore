@@ -1,0 +1,8 @@
+# Audit outputs hold third-party Instagram data: never publish them
+instagram-audit-*/
+
+__pycache__/
+*.pyc
+.claude/
+.DS_Store
+Thumbs.db
