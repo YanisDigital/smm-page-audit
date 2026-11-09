@@ -13,6 +13,8 @@
 ```json
 {
   "language": "uk",
+  "account_type": "local_business | expert | creator | brand",
+  "reduced": false,
   "title": "Аудит Instagram @handle",
   "subtitle": "Стратегія просування, контент-план і реклама",
   "summary": {
@@ -30,7 +32,9 @@
 }
 ```
 
-`build_report.py` validates this file and prints clear errors. Section `id`s become anchors
+`build_report.py` validates this file and prints clear errors, including **minimum content
+per section** (section 3 below). `reduced: true` (private account, thin data only) turns the
+minimums into warnings. Section `id`s become anchors
 in the navigation. Text fields support `**bold**` and line breaks (`\n`); everything else is
 escaped as plain text.
 
@@ -48,13 +52,17 @@ escaped as plain text.
 | `metrics` | — | Auto: key metric tiles from `metrics.json` |
 | `posts` | `which`: `top` / `bottom` | Auto: table of top or bottom posts with links |
 | `format_mix` | — | Auto: format share and ER per format bars |
+| `trend` | — | Auto: medians per month (posts, ER, likes, comments, Reels views) |
+| `rubrics` | — | Auto: the same per rubric, with share of posts |
+| `collab_split` | — | Auto: owned posts vs collabs |
 
 ## 3. Required sections (in this order)
 
 Section 1 (summary & scorecard) is rendered from `summary`; the `sections` array holds 2–10.
 
 **2. `stats` — Statistics & effectiveness**
-- `metrics`, `format_mix`, `posts` top, `posts` bottom blocks.
+- `metrics`, `format_mix`, `trend`, `posts` top, `posts` bottom blocks; `rubrics` and
+  `collab_split` when the data has rubrics or collabs.
 - Paragraph/list: what the numbers mean vs sourced benchmarks (cite them).
 - Why top posts worked, why bottom posts failed (hook, topic, format).
 - Timing hint (weekday/hour) if the sample allows, with the caveat.
@@ -113,6 +121,23 @@ Section 1 (summary & scorecard) is rendered from `summary`; the `sections` array
 
 **10. `checklist` — Action checklist**
 - Three `checklist` blocks or one with prefixes: Week 1 / Month 1 / Months 2–3.
+
+### Minimums enforced by `build_report.py`
+
+| Section | Minimum |
+|---|---|
+| summary | 6 scores, 3 problems, 3 quick wins |
+| stats | 2 `posts` blocks, 1 `trend` block |
+| audience | 2 segment cards |
+| strategy | 3 table rows (months), 2 `copy` blocks (name/bio) |
+| content_plan | one table with ≥ 12 rows |
+| ideas | ≥ 18 cards (Reels + posts), ≥ 28 list/card items in total, 7-row Stories table |
+| ads | ≥ 3 table rows, 2 `copy` blocks, 1 policy `callout` |
+| clients | 2 `copy` blocks (scripts / auto-replies), ≥ 3 list or card items |
+| kpi | ≥ 5 table rows |
+| checklist | ≥ 8 checklist items |
+
+These are floors, not targets: a strong report usually goes well beyond them.
 
 ## 4. Writing style
 

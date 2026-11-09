@@ -25,7 +25,58 @@ BLOCK_FIELDS = {
     "metrics": [],
     "posts": ["which"],
     "format_mix": [],
+    "trend": [],
+    "rubrics": [],
+    "collab_split": [],
 }
+ACCOUNT_TYPES = ("local_business", "expert", "creator", "brand")
+
+# Minimum content per section, so a report is never thin. (block type, field, count):
+# "items" counts list/cards/checklist entries, "rows" counts table rows, "blocks" counts blocks.
+MINIMUMS = {
+    "stats": [("posts", "blocks", 2), ("trend", "blocks", 1)],
+    "audience": [("cards", "items", 2)],
+    "strategy": [("table", "rows", 3), ("copy", "blocks", 2)],
+    "content_plan": [("table", "max_rows", 12)],
+    "ideas": [("cards", "items", 18), ("*", "items", 28), ("table", "rows", 7)],
+    "ads": [("table", "rows", 3), ("copy", "blocks", 2), ("callout", "blocks", 1)],
+    "clients": [("copy", "blocks", 2), ("*", "items", 3)],
+    "kpi": [("table", "rows", 5)],
+    "checklist": [("checklist", "items", 8)],
+}
+SUMMARY_MINIMUMS = {"scores": 6, "problems": 3, "quick_wins": 3}
+
+
+def count_in(section, btype, what):
+    blocks = [b for b in section.get("blocks") or [] if btype == "*" or b.get("type") == btype]
+    if what == "blocks":
+        return len(blocks)
+    if what == "rows":
+        return sum(len(b.get("rows") or []) for b in blocks)
+    if what == "max_rows":
+        return max((len(b.get("rows") or []) for b in blocks), default=0)
+    return sum(len(b.get("items") or []) for b in blocks if b.get("type") in ("list", "cards", "checklist"))
+
+
+def check_minimums(content):
+    """Return a list of 'too thin' messages."""
+    thin = []
+    summary = content.get("summary") or {}
+    for key, n in SUMMARY_MINIMUMS.items():
+        if len(summary.get(key) or []) < n:
+            thin.append(f"summary.{key}: {len(summary.get(key) or [])}, need ≥ {n}")
+    sections = {s.get("id"): s for s in content.get("sections") or []}
+    for sid, rules in MINIMUMS.items():
+        section = sections.get(sid)
+        if not section:
+            continue
+        for btype, what, n in rules:
+            got = count_in(section, btype, what)
+            if got < n:
+                label = "list/cards" if btype == "*" else btype
+                unit = "rows in one table" if what == "max_rows" else what
+                thin.append(f"{sid}: {label} {unit} = {got}, need ≥ {n}")
+    return thin
 
 LABELS = {
     "uk": {
@@ -40,7 +91,8 @@ LABELS = {
         "comments": "Коментарі", "views": "Перегляди", "caption": "Початок підпису", "open": "відкрити",
         "copy": "Копіювати", "copied": "Скопійовано", "assumptions": "Припущення",
         "sources": "Джерела", "data_notes": "Обмеження даних", "collected": "Дані зібрано",
-        "analyzed": "Проаналізовано постів", "generated": "Звіт згенеровано", "contents": "Зміст",
+        "analyzed": "Проаналізовано постів",
+        "likes_views": "Лайки / перегляди Reels", "period": "Період", "rubric": "Рубрика", "group": "Група", "owned": "Власні пости", "collab": "Колаборації", "median_likes": "Медіана лайків", "median_views": "Медіана переглядів Reels", "account_type": "Тип акаунта", "account_types": {"local_business": "Локальний бізнес", "expert": "Експерт / послуги", "creator": "Блогер / креатор", "brand": "Великий бренд"}, "generated": "Звіт згенеровано", "contents": "Зміст",
         "types": {"reel": "Reels", "carousel": "Карусель", "image": "Фото", "video": "Відео", "unknown": "Інше"},
     },
     "ru": {
@@ -55,7 +107,8 @@ LABELS = {
         "comments": "Комментарии", "views": "Просмотры", "caption": "Начало подписи", "open": "открыть",
         "copy": "Копировать", "copied": "Скопировано", "assumptions": "Допущения",
         "sources": "Источники", "data_notes": "Ограничения данных", "collected": "Данные собраны",
-        "analyzed": "Проанализировано постов", "generated": "Отчёт создан", "contents": "Содержание",
+        "analyzed": "Проанализировано постов",
+        "likes_views": "Лайки / просмотры Reels", "period": "Период", "rubric": "Рубрика", "group": "Группа", "owned": "Свои посты", "collab": "Коллаборации", "median_likes": "Медиана лайков", "median_views": "Медиана просмотров Reels", "account_type": "Тип аккаунта", "account_types": {"local_business": "Локальный бизнес", "expert": "Эксперт / услуги", "creator": "Блогер / креатор", "brand": "Крупный бренд"}, "generated": "Отчёт создан", "contents": "Содержание",
         "types": {"reel": "Reels", "carousel": "Карусель", "image": "Фото", "video": "Видео", "unknown": "Другое"},
     },
     "en": {
@@ -70,7 +123,8 @@ LABELS = {
         "comments": "Comments", "views": "Views", "caption": "Caption start", "open": "open",
         "copy": "Copy", "copied": "Copied", "assumptions": "Assumptions",
         "sources": "Sources", "data_notes": "Data limitations", "collected": "Data collected",
-        "analyzed": "Posts analyzed", "generated": "Report generated", "contents": "Contents",
+        "analyzed": "Posts analyzed",
+        "likes_views": "Likes / Reels views", "period": "Period", "rubric": "Rubric", "group": "Group", "owned": "Owned posts", "collab": "Collabs", "median_likes": "Median likes", "median_views": "Median Reels views", "account_type": "Account type", "account_types": {"local_business": "Local business", "expert": "Expert / services", "creator": "Creator", "brand": "Large brand"}, "generated": "Report generated", "contents": "Contents",
         "types": {"reel": "Reels", "carousel": "Carousel", "image": "Photo", "video": "Video", "unknown": "Other"},
     },
 }
@@ -111,6 +165,8 @@ def pct(value):
 
 def validate(content):
     errors = []
+    if content.get("account_type") not in ACCOUNT_TYPES:
+        errors.append(f"'account_type' must be one of: {', '.join(ACCOUNT_TYPES)}.")
     if not isinstance(content.get("sections"), list):
         errors.append("'sections' must be a list.")
         raise ReportError("\n".join(errors))
@@ -144,6 +200,13 @@ def validate(content):
     missing = [s for s in REQUIRED_SECTIONS if s not in ids]
     if missing:
         errors.append("Missing required sections: " + ", ".join(missing))
+    thin = check_minimums(content)
+    if thin and content.get("reduced"):
+        # A reduced audit (private account, thin data) may be shorter: warn only
+        for t in thin:
+            print("WARNING (reduced audit):", t)
+    else:
+        errors += [f"Too thin: {t}" for t in thin]
     if errors:
         raise ReportError("\n".join(errors))
 
@@ -158,6 +221,7 @@ def render_metrics(metrics, L):
         (L["posts_week"], num(c.get("posts_per_week"), 1)),
         (L["reels_views"], num(r.get("median_views"))),
         (L["views_followers"], num(r.get("views_to_followers"), 2)),
+        (L["likes_views"], pct(r.get("likes_per_view_median"))),
         (L["comments_likes"], pct(e.get("comments_to_likes"))),
         (L["days_since"], num(c.get("days_since_last_post"))),
         (L["max_gap"], num(c.get("max_gap_days"))),
@@ -183,6 +247,22 @@ def render_format_mix(metrics, L):
     head = (f'<tr><th>{L["format"]}</th><th>{L["count"]}</th><th>{L["share"]}</th>'
             f'<th>{L["er_avg"]}</th><th>{L["avg_views"]}</th></tr>')
     return f'<div class="table-wrap"><table><thead>{head}</thead><tbody>{"".join(rows)}</tbody></table></div>'
+
+
+def render_groups(groups, first_col, L, share=False):
+    """Table of group_stats() rows from metrics.json (trend, rubrics, owned vs collab)."""
+    if not groups:
+        return ""
+    head = (f'<tr><th>{esc(first_col)}</th><th>{L["count"]}</th>' + (f'<th>{L["share"]}</th>' if share else "")
+            + f'<th>{L["er_median"]}</th><th>{L["median_likes"]}</th><th>{L["comments"]}</th>'
+            f'<th>{L["median_views"]}</th></tr>')
+    rows = "".join(
+        f'<tr><td>{esc(name)}</td><td class="num">{num(g.get("count"))}</td>'
+        + (f'<td class="num">{pct(g.get("share_pct"))}</td>' if share else "")
+        + f'<td class="num">{pct(g.get("er_followers_median"))}</td><td class="num">{num(g.get("median_likes"))}</td>'
+        f'<td class="num">{num(g.get("median_comments"))}</td><td class="num">{num(g.get("median_reel_views"))}</td></tr>'
+        for name, g in groups.items())
+    return f'<div class="table-wrap"><table><thead>{head}</thead><tbody>{rows}</tbody></table></div>'
 
 
 def render_posts(metrics, which, L):
@@ -239,6 +319,13 @@ def render_block(block, metrics, L):
         return render_format_mix(metrics, L)
     if t == "posts":
         return render_posts(metrics, block["which"], L)
+    if t == "trend":
+        return render_groups(metrics.get("trend") or {}, L["period"], L)
+    if t == "rubrics":
+        return render_groups(metrics.get("rubrics") or {}, L["rubric"], L, share=True)
+    if t == "collab_split":
+        split = metrics.get("collab_split") or {}
+        return render_groups({L[k]: split[k] for k in ("owned", "collab") if k in split}, L["group"], L)
     return ""
 
 
@@ -299,7 +386,8 @@ def build(audit_dir, out_path):
     if extra:
         body.append(f'<section id="notes" class="notes">{"".join(extra)}</section>')
 
-    hero = f'''<p class="eyebrow">Instagram audit · @{esc(handle)}</p><h1>{esc(title)}</h1>
+    kind = L["account_types"].get(content.get("account_type"), "")
+    hero = f'''<p class="eyebrow">Instagram audit · @{esc(handle)} · {esc(kind)}</p><h1>{esc(title)}</h1>
 <p class="subtitle">{esc(content.get("subtitle", ""))}</p>
 <div class="hero-meta"><span><b>{num(profile.get("followers"))}</b> {esc(L["followers"])}</span>
 <span><b>{num(profile.get("following"))}</b> {esc(L["following"])}</span>

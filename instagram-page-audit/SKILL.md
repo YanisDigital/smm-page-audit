@@ -68,6 +68,10 @@ Confirm the link/handle and ask once:
 Say that "don't know" is fine. If the user only wants the report fast, skip the brief, infer
 from the page, and list everything inferred under **Assumptions** in the report.
 
+Decide the **account type** early (from the brief or the profile) — it changes which sections
+get depth and how scores are read (see `references/analysis-framework.md`, section 6):
+`local_business`, `expert`, `creator` or `brand` (a large company or product brand).
+
 ### Step 2 — Collect data (read-only)
 
 Follow `references/collection.md`. Summary:
@@ -75,12 +79,16 @@ Follow `references/collection.md`. Summary:
 - Open the profile in the built-in browser pane (`preview_start` with the URL); use Claude in
   Chrome if the user asks for it or is logged in to Instagram only there (check the
   `ds_user_id` cookie: absent = not logged in).
-- Try Method A (in-page fetch); on 401/404/429 switch to Method A2 (capture the grid's own
-  responses) — see `references/collection.md`.
-- Capture the profile header, highlights, link in bio, last 24–30 grid items with type, date,
-  caption, likes, comments, Reels views, and 5–10 comments from 3–5 posts (audience voice).
-- Save everything to `instagram-audit-<handle>-<YYYY-MM-DD>/page_data.json` in the current
-  working directory, following the schema in `references/collection.md`.
+- Paste `assets/collect.js` into the profile page with the JavaScript tool and call its
+  functions (`IGA.start`, `IGA.scroll`, `IGA.openMissing`, `IGA.reelViews`, `IGA.rows`) — the
+  exact sequence is in `references/collection.md`. Do not rewrite the collector by hand.
+- Collect the header, highlights, link in bio, the last 30–60 grid posts with type, date,
+  caption, likes, comments, shares (when visible), Reels views, and comment **text** from 3–5
+  posts (audience voice).
+- Write the raw pieces to `instagram-audit-<handle>-<YYYY-MM-DD>/raw/` and assemble them:
+  `python <skill-dir>/scripts/build_page_data.py <audit-dir>`.
+- Tag every post with a **rubric** (content theme, 4–7 names in the page's own terms) in
+  `raw/rubrics.json` before building `page_data.json`; metrics per rubric depend on it.
 - Tell the user briefly what was collected and what was not available (hidden likes, etc.).
 
 ### Step 3 — Compute metrics
@@ -90,9 +98,10 @@ python <skill-dir>/scripts/metrics.py <audit-dir>/page_data.json
 ```
 
 Writes `metrics.json` next to the input: engagement rate (ER) by followers overall and by
-format, Reels views and ER by views, posting cadence and gaps, format mix, weekday/hour
-patterns, caption/CTA/hashtag stats, top-5 and bottom-5 posts. Read it before writing
-anything. See `references/analysis-framework.md` for how to interpret each number.
+format, Reels views, likes per view, shares, posting cadence and gaps, format mix, monthly
+trend, owned posts vs collabs, metrics per rubric, weekday/hour patterns (in the audience's
+time zone when `brief.utc_offset` is set), caption/CTA/hashtag stats, top-5 and bottom-5 posts,
+and the content-calendar start date. Read it before writing anything. See `references/analysis-framework.md` for how to interpret each number.
 
 ### Step 4 — Web research (mandatory, 3–5 searches)
 
@@ -126,8 +135,10 @@ The report has 10 sections:
 10. Action checklist
 
 Write the content into `<audit-dir>/report_content.json` using the block schema in
-`references/report-sections.md`. Ready-to-use text (bio, hooks, captions, ad copy) goes in
-verbatim — the reader should be able to copy and paste it.
+`references/report-sections.md`, with `account_type` set. Ready-to-use text (bio, hooks,
+captions, ad copy) goes in verbatim — the reader should be able to copy and paste it.
+Use the numbers from `metrics.json` (trend, rubrics, collab split) instead of recomputing them,
+and the calendar dates from `metrics.calendar`.
 
 ### Step 6 — Build and check the report
 
@@ -136,8 +147,11 @@ python <skill-dir>/scripts/build_report.py <audit-dir>
 ```
 
 Reads `page_data.json`, `metrics.json`, `report_content.json` from the audit dir and writes
-`report.html`. Fix any validation errors it prints. Open the report in the browser pane and
-skim it once (layout, empty sections, broken tables).
+`report.html`. Fix any validation errors it prints — including **"Too thin"** errors: each
+section has a minimum amount of content (see `references/report-sections.md`). Add real
+content; never pad. Only a reduced audit (private account, thin data) may set
+`"reduced": true` to turn these into warnings. Open the report in the browser pane and skim it
+once (layout, empty sections, broken tables).
 
 ### Step 7 — Hand over
 
@@ -155,6 +169,8 @@ In chat (user's language), give:
 | `references/collection.md` | Step 2 — browser steps, JS snippets, `page_data.json` schema |
 | `references/analysis-framework.md` | Steps 3 and 5 — metric formulas, benchmarks logic, scoring rubric |
 | `references/report-sections.md` | Step 5 — what each section must contain, block schema |
+| `assets/collect.js` | Step 2 — browser collector, pasted into the page |
+| `scripts/build_page_data.py` | Step 2 — assembles `page_data.json` from `raw/` |
 | `scripts/metrics.py` | Step 3 |
 | `scripts/build_report.py` | Step 6 |
 | `assets/report-template.html` | Used by `build_report.py`; edit only to change the design |

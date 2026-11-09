@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-31T09:53:39+00:00",
+  "generated_at": "2026-11-09T15:54:38+00:00",
   "profile": {
     "handle": "demo_coffee_lviv",
     "followers": 4120,
@@ -16,26 +16,112 @@
     "avg_likes": 99.58,
     "avg_comments": 3.65,
     "comments_to_likes": 3.67,
+    "median_shares": 9.5,
+    "shares_known": 10,
     "by_type": {
       "carousel": {
         "count": 7,
         "er_followers_avg": 1.79,
+        "er_followers_median": 1.53,
         "avg_interactions": 73.57,
         "avg_views": null
       },
       "image": {
         "count": 9,
         "er_followers_avg": 1.35,
+        "er_followers_median": 1.31,
         "avg_interactions": 55.56,
         "avg_views": null
       },
       "reel": {
         "count": 10,
         "er_followers_avg": 4.05,
+        "er_followers_median": 3.11,
         "avg_interactions": 166.9,
         "avg_views": 1965.9
       }
     }
+  },
+  "collab_split": {
+    "owned": {
+      "count": 25,
+      "er_followers_median": 1.8,
+      "median_likes": 72,
+      "median_comments": 2,
+      "median_reel_views": 1213
+    },
+    "collab": {
+      "count": 1,
+      "er_followers_median": 1.92,
+      "median_likes": 76,
+      "median_comments": 3,
+      "median_reel_views": 454
+    }
+  },
+  "trend": {
+    "2026-07": {
+      "count": 1,
+      "er_followers_median": 1.21,
+      "median_likes": 50,
+      "median_comments": 0,
+      "median_reel_views": null
+    },
+    "2026-08": {
+      "count": 7,
+      "er_followers_median": 2.55,
+      "median_likes": 103,
+      "median_comments": 2,
+      "median_reel_views": 1291.5
+    },
+    "2026-09": {
+      "count": 8,
+      "er_followers_median": 2.06,
+      "median_likes": 82.0,
+      "median_comments": 2.5,
+      "median_reel_views": 454
+    },
+    "2026-10": {
+      "count": 8,
+      "er_followers_median": 1.58,
+      "median_likes": 65.0,
+      "median_comments": 0.5,
+      "median_reel_views": 1321
+    }
+  },
+  "rubrics": {
+    "Behind the bar": {
+      "count": 10,
+      "er_followers_median": 3.11,
+      "median_likes": 115.0,
+      "median_comments": 3.5,
+      "median_reel_views": 1196.5,
+      "share_pct": 38.46
+    },
+    "Atmosphere": {
+      "count": 9,
+      "er_followers_median": 1.31,
+      "median_likes": 54,
+      "median_comments": 2,
+      "median_reel_views": null,
+      "share_pct": 34.62
+    },
+    "Menu & specials": {
+      "count": 7,
+      "er_followers_median": 1.53,
+      "median_likes": 62,
+      "median_comments": 1,
+      "median_reel_views": null,
+      "share_pct": 26.92
+    }
+  },
+  "calendar": {
+    "start": "2026-11-02",
+    "week_starts": [
+      "2026-11-02",
+      "2026-11-09",
+      "2026-11-16",
+      "2026-11-23"
+    ]
   },
   "reels": {
     "count": 10,
@@ -43,6 +129,7 @@
     "median_views": 1196.5,
     "views_to_followers": 0.29,
     "er_views_avg": 15.07,
+    "likes_per_view_median": 12.98,
     "avg_duration_sec": 20.2
   },
   "format_mix": {
@@ -69,7 +156,7 @@
     "days_since_last_post": 3.02
   },
   "timing": {
-    "timezone_note": "Hours are in the timezone of the stored dates (UTC for in-page fetch).",
+    "timezone_note": "Hours are in the audience time zone (UTC+2).",
     "by_weekday": {
       "Mon": {
         "posts": 3,
@@ -80,12 +167,12 @@
         "er_avg": 1.81
       },
       "Wed": {
-        "posts": 5,
-        "er_avg": 1.53
+        "posts": 4,
+        "er_avg": 1.36
       },
       "Thu": {
-        "posts": 3,
-        "er_avg": 1.26
+        "posts": 4,
+        "er_avg": 1.5
       },
       "Fri": {
         "posts": 7,
@@ -101,53 +188,53 @@
       }
     },
     "by_hour": {
-      "9": {
+      "0": {
+        "posts": 1,
+        "er_avg": 2.21
+      },
+      "11": {
         "posts": 1,
         "er_avg": 2.31
       },
-      "10": {
+      "12": {
         "posts": 2,
         "er_avg": 1.88
       },
-      "12": {
+      "14": {
         "posts": 1,
         "er_avg": 1.84
       },
-      "13": {
+      "15": {
         "posts": 4,
         "er_avg": 1.85
       },
-      "14": {
+      "16": {
         "posts": 2,
         "er_avg": 2.33
       },
-      "15": {
+      "17": {
         "posts": 2,
         "er_avg": 0.97
       },
-      "16": {
+      "18": {
         "posts": 3,
         "er_avg": 1.22
       },
-      "17": {
+      "19": {
         "posts": 3,
         "er_avg": 2.88
       },
-      "18": {
+      "20": {
         "posts": 5,
         "er_avg": 4.88
       },
-      "20": {
+      "22": {
         "posts": 1,
         "er_avg": 2.5
       },
-      "21": {
+      "23": {
         "posts": 1,
         "er_avg": 1.8
-      },
-      "22": {
-        "posts": 1,
-        "er_avg": 2.21
       }
     }
   },

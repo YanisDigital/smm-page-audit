@@ -11,7 +11,8 @@
     "own_page": true,
     "assumptions": [
       "FICTIONAL DEMO DATA for testing the skill"
-    ]
+    ],
+    "utc_offset": 2
   },
   "profile": {
     "handle": "demo_coffee_lviv",
@@ -59,7 +60,9 @@
       "carousel_count": null,
       "pinned": false,
       "collab": false,
-      "location": "Lviv"
+      "location": "Lviv",
+      "rubric": "Behind the bar",
+      "shares": 7
     },
     {
       "id": "1001",
@@ -74,7 +77,8 @@
       "carousel_count": 8,
       "pinned": false,
       "collab": false,
-      "location": null
+      "location": null,
+      "rubric": "Menu & specials"
     },
     {
       "id": "1002",
@@ -89,7 +93,8 @@
       "carousel_count": null,
       "pinned": false,
       "collab": false,
-      "location": null
+      "location": null,
+      "rubric": "Atmosphere"
     },
     {
       "id": "1003",
@@ -104,7 +109,9 @@
       "carousel_count": null,
       "pinned": false,
       "collab": false,
-      "location": null
+      "location": null,
+      "rubric": "Behind the bar",
+      "shares": 45
     },
     {
       "id": "1004",
@@ -119,7 +126,8 @@
       "carousel_count": null,
       "pinned": false,
       "collab": false,
-      "location": "Lviv"
+      "location": "Lviv",
+      "rubric": "Atmosphere"
     },
     {
       "id": "1005",
@@ -134,7 +142,8 @@
       "carousel_count": 8,
       "pinned": false,
       "collab": false,
-      "location": null
+      "location": null,
+      "rubric": "Menu & specials"
     },
     {
       "id": "1006",
@@ -149,7 +158,8 @@
       "carousel_count": null,
       "pinned": false,
       "collab": false,
-      "location": null
+      "location": null,
+      "rubric": "Atmosphere"
     },
     {
       "id": "1007",
@@ -164,7 +174,9 @@
       "carousel_count": null,
       "pinned": false,
       "collab": false,
-      "location": null
+      "location": null,
+      "rubric": "Behind the bar",
+      "shares": 10
     },
     {
       "id": "1008",
@@ -179,7 +191,9 @@
       "carousel_count": null,
       "pinned": false,
       "collab": false,
-      "location": "Lviv"
+      "location": "Lviv",
+      "rubric": "Behind the bar",
+      "shares": 8
     },
     {
       "id": "1009",
@@ -194,7 +208,8 @@
       "carousel_count": 6,
       "pinned": false,
       "collab": false,
-      "location": null
+      "location": null,
+      "rubric": "Menu & specials"
     },
     {
       "id": "1010",
@@ -209,7 +224,8 @@
       "carousel_count": null,
       "pinned": false,
       "collab": false,
-      "location": null
+      "location": null,
+      "rubric": "Atmosphere"
     },
     {
       "id": "1011",
@@ -224,7 +240,9 @@
       "carousel_count": null,
       "pinned": false,
       "collab": true,
-      "location": null
+      "location": null,
+      "rubric": "Behind the bar",
+      "shares": 6
     },
     {
       "id": "1012",
@@ -239,7 +257,8 @@
       "carousel_count": null,
       "pinned": false,
       "collab": false,
-      "location": "Lviv"
+      "location": "Lviv",
+      "rubric": "Atmosphere"
     },
     {
       "id": "1013",
@@ -254,7 +273,8 @@
       "carousel_count": 7,
       "pinned": false,
       "collab": false,
-      "location": null
+      "location": null,
+      "rubric": "Menu & specials"
     },
     {
       "id": "1014",
@@ -269,7 +289,8 @@
       "carousel_count": null,
       "pinned": false,
       "collab": false,
-      "location": null
+      "location": null,
+      "rubric": "Atmosphere"
     },
     {
       "id": "1015",
@@ -284,7 +305,9 @@
       "carousel_count": null,
       "pinned": false,
       "collab": false,
-      "location": null
+      "location": null,
+      "rubric": "Behind the bar",
+      "shares": 14
     },
     {
       "id": "1016",
@@ -299,7 +322,9 @@
       "carousel_count": null,
       "pinned": false,
       "collab": false,
-      "location": "Lviv"
+      "location": "Lviv",
+      "rubric": "Behind the bar",
+      "shares": 11
     },
     {
       "id": "1017",
@@ -314,7 +339,8 @@
       "carousel_count": 4,
       "pinned": false,
       "collab": false,
-      "location": null
+      "location": null,
+      "rubric": "Menu & specials"
     },
     {
       "id": "1018",
@@ -329,7 +355,8 @@
       "carousel_count": null,
       "pinned": false,
       "collab": false,
-      "location": null
+      "location": null,
+      "rubric": "Atmosphere"
     },
     {
       "id": "1019",
@@ -344,7 +371,9 @@
       "carousel_count": null,
       "pinned": false,
       "collab": false,
-      "location": null
+      "location": null,
+      "rubric": "Behind the bar",
+      "shares": 9
     },
     {
       "id": "1020",
@@ -359,7 +388,8 @@
       "carousel_count": null,
       "pinned": true,
       "collab": false,
-      "location": "Lviv"
+      "location": "Lviv",
+      "rubric": "Atmosphere"
     },
     {
       "id": "1021",
@@ -374,7 +404,8 @@
       "carousel_count": 5,
       "pinned": true,
       "collab": false,
-      "location": null
+      "location": null,
+      "rubric": "Menu & specials"
     },
     {
       "id": "1022",
@@ -389,7 +420,8 @@
       "carousel_count": null,
       "pinned": false,
       "collab": false,
-      "location": null
+      "location": null,
+      "rubric": "Atmosphere"
     },
     {
       "id": "1023",
@@ -404,7 +436,9 @@
       "carousel_count": null,
       "pinned": false,
       "collab": false,
-      "location": null
+      "location": null,
+      "rubric": "Behind the bar",
+      "shares": 8
     },
     {
       "id": "1024",
@@ -419,7 +453,9 @@
       "carousel_count": null,
       "pinned": false,
       "collab": false,
-      "location": "Lviv"
+      "location": "Lviv",
+      "rubric": "Behind the bar",
+      "shares": 11
     },
     {
       "id": "1025",
@@ -434,7 +470,8 @@
       "carousel_count": 5,
       "pinned": false,
       "collab": false,
-      "location": null
+      "location": null,
+      "rubric": "Menu & specials"
     }
   ],
   "comments_sample": [

@@ -97,9 +97,12 @@ instagram-page-audit/
 │   ├── analysis-framework.md   # metric formulas, scoring rubric
 │   └── report-sections.md      # report sections and block schema
 ├── scripts/
+│   ├── build_page_data.py      # raw/ files -> page_data.json
 │   ├── metrics.py              # page_data.json -> metrics.json
 │   └── build_report.py         # -> report.html
-├── assets/report-template.html
+├── assets/
+│   ├── collect.js              # read-only browser collector
+│   └── report-template.html
 └── evals/                      # test prompts and the demo fixture
 ```
 

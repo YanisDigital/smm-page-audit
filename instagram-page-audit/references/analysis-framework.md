@@ -8,6 +8,7 @@ How to turn `page_data.json` + `metrics.json` into findings, scores and actions.
 3. Qualitative checks (profile, visuals, captions, conversion path)
 4. Scorecard rubric
 5. From finding to action
+6. Account types
 
 ---
 
@@ -21,11 +22,17 @@ How to turn `page_data.json` + `metrics.json` into findings, scores and actions.
 | `reels.avg_views`, `reels.median_views` | from `views` | Reels reach beyond followers. |
 | `reels.views_to_followers` | median views / followers | > 1 means Reels reach non-followers (growth engine working). |
 | `reels.er_views_avg` | (likes + comments) / views × 100 | Quality of the Reel for people who saw it. |
+| `reels.likes_per_view_median` | median of likes / views × 100 | Low (< ~1 %) with huge views can mean paid or boosted distribution — a hypothesis, check "Paid partnership" labels. |
+| `engagement.median_shares` | median shares where visible | Shares (sends) are a key reach signal; `shares_known` tells how many posts had the number. |
+| `collab_split` | `group_stats` for owned posts vs collabs | Do collabs bring more than own posts? Big share of collabs = weak own voice. |
+| `trend` | `group_stats` per calendar month (pinned excluded) | Rising or falling; compare months with ≥ 5 posts only. |
+| `rubrics` | `group_stats` + share per rubric | Which themes earn attention; needs `rubric` tags on posts. |
+| `calendar` | next Monday after collection + 4 week starts | Dates for the content calendar. |
 | `engagement.comments_to_likes` | total comments / total likes | Conversation depth; low = passive audience. |
 | `cadence.posts_per_week` | posts / period weeks | Over the analyzed period; pinned posts are excluded (often months old). |
 | `cadence.max_gap_days`, `cadence.days_since_last_post` | — | Long gaps and an inactive page hurt reach. |
 | `format_mix` | share of reel / carousel / image / video | |
-| `timing.by_weekday`, `timing.by_hour` | post count + avg ER per bucket | UTC hours unless the collector stored local time — say so. Small samples: treat as a hint only. |
+| `timing.by_weekday`, `timing.by_hour` | post count + avg ER per bucket | In the audience time zone when `brief.utc_offset` is set, otherwise UTC — say which. Small samples: a hint only. |
 | `captions` | avg length, % with CTA, % with question, % with hashtags, avg hashtags | CTA list is multilingual (uk/ru/en). |
 | `top_posts`, `bottom_posts` | by (likes + comments) | Open 2–3 of each and explain *why* (hook, topic, format, faces, offer). |
 | `warnings` | data gaps | Repeat relevant ones in the report. |
@@ -115,3 +122,18 @@ effect / KPI**. Example:
 
 Quick wins = actions doable in under a day with no budget (bio, highlights, pinned posts,
 link, CTA in captions, auto-reply keywords).
+
+## 6. Account types
+
+Set `account_type` in `report_content.json`. The same 10 sections stay, but depth and reading
+change:
+
+| Type | Typical goal | Sections that get most depth | Reading the scorecard | "Clients" section becomes |
+|---|---|---|---|---|
+| `local_business` | visits, bookings, DMs | profile/bio, local reach, ads, clients | Conversion path and local signals (geo, Maps) weigh most | booking/DM funnel, reviews, partners nearby |
+| `expert` | leads, course/service sales | positioning, content plan, DM funnel | Trust (cases, reviews) and offer clarity weigh most | lead magnets, keyword auto-replies, sales scripts |
+| `creator` | audience growth, brand deals | Reels ideas, collabs, consistency | Reach (views/followers) and engagement weigh most | brand-deal media kit, collab outreach |
+| `brand` | awareness, product adoption | stats depth (trend, collabs, rubrics), content system, UGC | Engagement per view and path to product weigh most; ads budget tiers are not useful | path into the product: in-app actions, UGC challenges, creator program |
+
+For `brand`, write the ads section as creative hypotheses and audience/test structure (budget
+as shares, not sums); for small accounts, use budget tiers when the budget is unknown.

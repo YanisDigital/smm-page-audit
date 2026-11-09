@@ -9,7 +9,7 @@ import re
 import statistics
 import sys
 from collections import Counter, defaultdict
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 CTA_PATTERNS = [
@@ -64,6 +64,18 @@ def er_followers(post, followers):
     return total / followers * 100
 
 
+def group_stats(items, followers):
+    """Medians for a group of posts (a month, a rubric, owned vs collab)."""
+    reels = [p for p in items if p.get("type") == "reel"]
+    return {
+        "count": len(items),
+        "er_followers_median": r2(median(er_followers(p, followers) for p in items)),
+        "median_likes": r2(median(p.get("likes") for p in items)),
+        "median_comments": r2(median(p.get("comments") for p in items)),
+        "median_reel_views": r2(median(p.get("views") for p in reels)),
+    }
+
+
 def post_summary(post, followers):
     return {
         "url": post.get("url"),
@@ -107,6 +119,7 @@ def compute(data):
         type_stats[t] = {
             "count": len(items),
             "er_followers_avg": r2(mean(er_followers(p, followers) for p in items)),
+            "er_followers_median": r2(median(er_followers(p, followers) for p in items)),
             "avg_interactions": r2(mean(interactions(p) for p in items)),
             "avg_views": r2(mean(p.get("views") for p in items)),
         }
@@ -120,6 +133,33 @@ def compute(data):
         if p.get("views") and interactions(p) is not None and p.get("likes") is not None
     ]
     med_views = median(reel_views)
+    likes_per_view = [p["likes"] / p["views"] * 100 for p in reels if p.get("views") and p.get("likes") is not None]
+    shares = [p.get("shares") for p in posts if p.get("shares") is not None]
+
+    # Owned posts vs collabs (co-authored or published by a partner)
+    collabs = [p for p in posts if p.get("collab")]
+    collab_split = ({"owned": group_stats([p for p in posts if not p.get("collab")], followers),
+                     "collab": group_stats(collabs, followers)} if collabs else {})
+
+    # Trend by calendar month, pinned posts excluded (they are usually old)
+    months = defaultdict(list)
+    for p in posts:
+        d = parse_date(p.get("date"))
+        if d and not p.get("pinned"):
+            months[d.strftime("%Y-%m")].append(p)
+    trend = {m: group_stats(items, followers) for m, items in sorted(months.items())}
+
+    # Rubrics: the "rubric" field is tagged by the model from captions
+    rubric_groups = defaultdict(list)
+    for p in posts:
+        if p.get("rubric"):
+            rubric_groups[p["rubric"]].append(p)
+    rubrics = {
+        name: {**group_stats(items, followers), "share_pct": r2(len(items) / len(posts) * 100)}
+        for name, items in sorted(rubric_groups.items(), key=lambda kv: -len(kv[1]))
+    }
+    if posts and not rubric_groups:
+        warnings.append("No 'rubric' tags on posts: rubric table not computed.")
 
     # Cadence: pinned posts are often old and would stretch the period
     dates = sorted(d for d in (parse_date(p.get("date")) for p in posts if not p.get("pinned")) if d)
@@ -141,16 +181,20 @@ def compute(data):
         if cadence["max_gap_days"] and cadence["max_gap_days"] > 14:
             warnings.append(f"Posting gap of {cadence['max_gap_days']} days in the period.")
 
-    # Timing (UTC unless dates carry another offset)
+    # Timing, shifted to the audience's time zone when the brief gives brief.utc_offset (hours)
+    offset = (data.get("brief") or {}).get("utc_offset")
+    shift = timedelta(hours=offset) if isinstance(offset, (int, float)) else timedelta(0)
     weekday = defaultdict(list)
     hour = defaultdict(list)
     for p in posts:
         d = parse_date(p.get("date"))
         if d:
+            d = d + shift
             weekday[WEEKDAYS[d.weekday()]].append(er_followers(p, followers))
             hour[d.hour].append(er_followers(p, followers))
     timing = {
-        "timezone_note": "Hours are in the timezone of the stored dates (UTC for in-page fetch).",
+        "timezone_note": (f"Hours are in the audience time zone (UTC{offset:+g})." if shift
+                          else "Hours are in UTC; set brief.utc_offset to shift them to the audience time zone."),
         "by_weekday": {k: {"posts": len(weekday[k]), "er_avg": r2(mean(weekday[k]))} for k in WEEKDAYS if k in weekday},
         "by_hour": {str(h): {"posts": len(v), "er_avg": r2(mean(v))} for h, v in sorted(hour.items())},
     }
@@ -173,6 +217,12 @@ def compute(data):
     ranked = sorted((p for p in posts if interactions(p) is not None), key=interactions, reverse=True)
     mix = Counter(p.get("type") or "unknown" for p in posts)
 
+    # Content calendar starts the Monday after collection
+    collected = parse_date(data.get("collected_at")) or datetime.now(timezone.utc)
+    start = collected.date() + timedelta(days=7 - collected.weekday())
+    calendar = {"start": start.isoformat(),
+                "week_starts": [(start + timedelta(weeks=w)).isoformat() for w in range(4)]}
+
     return {
         "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "profile": {
@@ -191,14 +241,21 @@ def compute(data):
             "avg_likes": r2(mean(p.get("likes") for p in posts)),
             "avg_comments": r2(mean(p.get("comments") for p in posts)),
             "comments_to_likes": r2(total_comments / total_likes * 100) if total_likes else None,
+            "median_shares": r2(median(shares)),
+            "shares_known": len(shares),
             "by_type": type_stats,
         },
+        "collab_split": collab_split,
+        "trend": trend,
+        "rubrics": rubrics,
+        "calendar": calendar,
         "reels": {
             "count": len(reels),
             "avg_views": r2(mean(reel_views)),
             "median_views": r2(med_views),
             "views_to_followers": r2(med_views / followers) if med_views is not None and followers else None,
             "er_views_avg": r2(mean(reel_er_views)),
+            "likes_per_view_median": r2(median(likes_per_view)),
             "avg_duration_sec": r2(mean(p.get("duration_sec") for p in reels)),
         },
         "format_mix": {t: {"count": c, "share_pct": r2(c / (len(posts) or 1) * 100)} for t, c in mix.most_common()},
