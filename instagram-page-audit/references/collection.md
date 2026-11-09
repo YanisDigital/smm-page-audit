@@ -74,6 +74,22 @@ keep the first 280 and last 130 characters, so a closing call to action is still
 co-authored posts and the posts in its own grid are kept), the viewer's "Followed by …" line,
 and the co-author's pin flag (a post counts as pinned only among the first three grid items).
 
+## 2c. Competitors (lighter run)
+
+For each of 2–3 competitors, open their profile, paste `collect.js`, then:
+`await IGA.start()` → `await IGA.scroll(2)` → `await IGA.openMissing(6)` (once or twice) →
+`await IGA.reelViews(3)` → `IGA.rows(...)` for the first 24 posts. No comments, no rubrics.
+Write `<audit-dir>/competitors/<handle>/raw/rows.jsonl` and `raw/profile.json` (handle,
+followers, following, posts_count), then:
+
+```bash
+python <skill-dir>/scripts/build_page_data.py <audit-dir>/competitors/<handle>
+python <skill-dir>/scripts/metrics.py <audit-dir>/competitors/<handle>/page_data.json
+```
+
+Opening a new profile resets the collector state (it is per handle), so finish the audited
+page first. Competitor data is third-party data too: keep it inside the audit folder.
+
 **If something goes wrong**
 - `missing` stays above 0 after 3 calls → note it in `notes.json` and continue.
 - Reels page shows other people's videos → the site-wide Reels feed was opened; open

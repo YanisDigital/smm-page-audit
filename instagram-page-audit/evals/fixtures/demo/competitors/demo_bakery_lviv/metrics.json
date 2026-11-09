@@ -1,0 +1,254 @@
+{
+  "generated_at": "2026-11-09T16:35:33+00:00",
+  "profile": {
+    "handle": "demo_bakery_lviv",
+    "followers": 9800,
+    "following": 300,
+    "posts_count": 512,
+    "highlight_count": 0,
+    "has_link": false,
+    "bio_length": 0
+  },
+  "posts_analyzed": 24,
+  "engagement": {
+    "er_followers_avg": 2.64,
+    "er_followers_median": 2.26,
+    "avg_likes": 246.29,
+    "avg_comments": 12.17,
+    "comments_to_likes": 4.94,
+    "median_shares": null,
+    "shares_known": 0,
+    "by_type": {
+      "carousel": {
+        "count": 8,
+        "er_followers_avg": 2.0,
+        "er_followers_median": 1.88,
+        "avg_interactions": 196.12,
+        "avg_views": null
+      },
+      "image": {
+        "count": 8,
+        "er_followers_avg": 2.69,
+        "er_followers_median": 2.75,
+        "avg_interactions": 263.88,
+        "avg_views": null
+      },
+      "reel": {
+        "count": 8,
+        "er_followers_avg": 3.22,
+        "er_followers_median": 3.53,
+        "avg_interactions": 315.38,
+        "avg_views": 7815.62
+      }
+    }
+  },
+  "collab_split": {},
+  "trend": {
+    "2026-10": {
+      "count": 24,
+      "er_followers_median": 2.26,
+      "median_likes": 208.5,
+      "median_comments": 13.5,
+      "median_reel_views": 7648.0
+    }
+  },
+  "rubrics": {},
+  "calendar": {
+    "start": "2026-11-16",
+    "week_starts": [
+      "2026-11-16",
+      "2026-11-23",
+      "2026-11-30",
+      "2026-12-07"
+    ]
+  },
+  "reels": {
+    "count": 8,
+    "avg_views": 7815.62,
+    "median_views": 7648.0,
+    "views_to_followers": 0.78,
+    "er_views_avg": 5.07,
+    "likes_per_view_median": 4.13,
+    "avg_duration_sec": null
+  },
+  "format_mix": {
+    "reel": {
+      "count": 8,
+      "share_pct": 33.33
+    },
+    "carousel": {
+      "count": 8,
+      "share_pct": 33.33
+    },
+    "image": {
+      "count": 8,
+      "share_pct": 33.33
+    }
+  },
+  "cadence": {
+    "first_post": "2026-10-05",
+    "last_post": "2026-10-28",
+    "period_days": 23.0,
+    "posts_per_week": 7.3,
+    "avg_gap_days": 1.0,
+    "max_gap_days": 1.0,
+    "days_since_last_post": 12.07
+  },
+  "timing": {
+    "timezone_note": "Hours are in UTC; set brief.utc_offset to shift them to the audience time zone.",
+    "by_weekday": {
+      "Mon": {
+        "posts": 4,
+        "er_avg": 2.75
+      },
+      "Tue": {
+        "posts": 4,
+        "er_avg": 2.34
+      },
+      "Wed": {
+        "posts": 4,
+        "er_avg": 1.86
+      },
+      "Thu": {
+        "posts": 3,
+        "er_avg": 2.85
+      },
+      "Fri": {
+        "posts": 3,
+        "er_avg": 2.39
+      },
+      "Sat": {
+        "posts": 3,
+        "er_avg": 3.92
+      },
+      "Sun": {
+        "posts": 3,
+        "er_avg": 2.68
+      }
+    },
+    "by_hour": {
+      "15": {
+        "posts": 24,
+        "er_avg": 2.64
+      }
+    }
+  },
+  "captions": {
+    "avg_length": 47.0,
+    "pct_with_cta": 100.0,
+    "pct_with_question": 0.0,
+    "pct_with_hashtags": 0.0,
+    "avg_hashtags": 0.0,
+    "top_hashtags": [],
+    "pct_empty": 0.0
+  },
+  "pinned_count": 0,
+  "collab_count": 0,
+  "top_posts": [
+    {
+      "url": "https://www.instagram.com/p/DEMOB020/",
+      "type": "image",
+      "date": "2026-10-08T15:00:00Z",
+      "likes": 387,
+      "comments": 20,
+      "views": null,
+      "er_followers": 4.15,
+      "caption_start": "FICTIONAL competitor post. Замовляйте у Direct!"
+    },
+    {
+      "url": "https://www.instagram.com/reel/DEMOB018/",
+      "type": "reel",
+      "date": "2026-10-10T15:00:00Z",
+      "likes": 376,
+      "comments": 28,
+      "views": 7054,
+      "er_followers": 4.12,
+      "caption_start": "FICTIONAL competitor post. Замовляйте у Direct!"
+    },
+    {
+      "url": "https://www.instagram.com/reel/DEMOB012/",
+      "type": "reel",
+      "date": "2026-10-16T15:00:00Z",
+      "likes": 389,
+      "comments": 14,
+      "views": 11455,
+      "er_followers": 4.11,
+      "caption_start": "FICTIONAL competitor post. Замовляйте у Direct!"
+    },
+    {
+      "url": "https://www.instagram.com/reel/DEMOB003/",
+      "type": "reel",
+      "date": "2026-10-25T15:00:00Z",
+      "likes": 388,
+      "comments": 3,
+      "views": 7991,
+      "er_followers": 3.99,
+      "caption_start": "FICTIONAL competitor post. Замовляйте у Direct!"
+    },
+    {
+      "url": "https://www.instagram.com/p/DEMOB011/",
+      "type": "image",
+      "date": "2026-10-17T15:00:00Z",
+      "likes": 388,
+      "comments": 3,
+      "views": null,
+      "er_followers": 3.99,
+      "caption_start": "FICTIONAL competitor post. Замовляйте у Direct!"
+    }
+  ],
+  "bottom_posts": [
+    {
+      "url": "https://www.instagram.com/p/DEMOB005/",
+      "type": "image",
+      "date": "2026-10-23T15:00:00Z",
+      "likes": 109,
+      "comments": 4,
+      "views": null,
+      "er_followers": 1.15,
+      "caption_start": "FICTIONAL competitor post. Замовляйте у Direct!"
+    },
+    {
+      "url": "https://www.instagram.com/p/DEMOB001/",
+      "type": "carousel",
+      "date": "2026-10-27T15:00:00Z",
+      "likes": 114,
+      "comments": 4,
+      "views": null,
+      "er_followers": 1.2,
+      "caption_start": "FICTIONAL competitor post. Замовляйте у Direct!"
+    },
+    {
+      "url": "https://www.instagram.com/p/DEMOB013/",
+      "type": "carousel",
+      "date": "2026-10-15T15:00:00Z",
+      "likes": 115,
+      "comments": 9,
+      "views": null,
+      "er_followers": 1.27,
+      "caption_start": "FICTIONAL competitor post. Замовляйте у Direct!"
+    },
+    {
+      "url": "https://www.instagram.com/p/DEMOB014/",
+      "type": "image",
+      "date": "2026-10-14T15:00:00Z",
+      "likes": 113,
+      "comments": 19,
+      "views": null,
+      "er_followers": 1.35,
+      "caption_start": "FICTIONAL competitor post. Замовляйте у Direct!"
+    },
+    {
+      "url": "https://www.instagram.com/p/DEMOB023/",
+      "type": "image",
+      "date": "2026-10-05T15:00:00Z",
+      "likes": 122,
+      "comments": 20,
+      "views": null,
+      "er_followers": 1.45,
+      "caption_start": "FICTIONAL competitor post. Замовляйте у Direct!"
+    }
+  ],
+  "warnings": [
+    "No 'rubric' tags on posts: rubric table not computed."
+  ]
+}

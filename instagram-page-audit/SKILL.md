@@ -103,17 +103,22 @@ trend, owned posts vs collabs, metrics per rubric, weekday/hour patterns (in the
 time zone when `brief.utc_offset` is set), caption/CTA/hashtag stats, top-5 and bottom-5 posts,
 and the content-calendar start date. Read it before writing anything. See `references/analysis-framework.md` for how to interpret each number.
 
-### Step 4 — Web research (mandatory, 3–5 searches)
+### Step 4 — Benchmarks, competitors, web research
 
-Run these before writing the strategy, and keep the URLs for the **Sources** block:
+Start from `references/benchmarks.md` (sourced figures with confidence levels). Then run
+2–4 web searches, keeping the URLs for the **Sources** block:
 
-- Engagement-rate benchmarks for the follower tier and niche (current year).
+- Refresh a benchmark only if `benchmarks.md` is older than 6 months for it, or the niche or
+  follower tier is not covered.
 - Current Instagram algorithm / ranking and format recommendations (Reels length,
   carousels, trial reels, etc.) — these change often; never rely on memory.
 - Current Meta Ads targeting state (Advantage+ audience, detailed targeting as suggestions,
   special ad categories) for the ads plan.
-- 2–3 competitors in the same niche + city: what they post, what works. Optionally check
-  the Meta Ad Library (`facebook.com/ads/library`) for the page and competitors.
+- 2–3 competitors in the same niche + city (from the brief, or found by search): collect each
+  one with `collect.js` into `<audit-dir>/competitors/<handle>/` (lighter run — see
+  `references/collection.md`, section 2c) and run `metrics.py` on it. The report's
+  `competitors` block then compares them automatically. If no competitor can be collected,
+  say why in the report. Optionally check the Meta Ad Library (`facebook.com/ads/library`).
 - If the niche is sensitive (health, finance, real estate, jobs, supplements, beauty
   before/after), search Meta's restrictions for that category.
 
@@ -139,6 +144,12 @@ Write the content into `<audit-dir>/report_content.json` using the block schema 
 captions, ad copy) goes in verbatim — the reader should be able to copy and paste it.
 Use the numbers from `metrics.json` (trend, rubrics, collab split) instead of recomputing them,
 and the calendar dates from `metrics.calendar`.
+
+- Tag findings: `[[fact]]` (seen in the data), `[[hyp]]` (interpretation to verify),
+  `[[est]]` (calculation, benchmark or target). Every `summary.problems` item must carry one.
+- In `stats`, add at least two `chart` blocks (`posts_per_month`, `trend_views`,
+  `reels_views`, `rubrics`) and one `repeat_stop` block: 3+ concrete things to keep doing
+  (with a post link and why it worked) and 3+ to stop doing (with the data behind it).
 
 ### Step 6 — Build and check the report
 
@@ -169,6 +180,7 @@ In chat (user's language), give:
 | `references/collection.md` | Step 2 — browser steps, JS snippets, `page_data.json` schema |
 | `references/analysis-framework.md` | Steps 3 and 5 — metric formulas, benchmarks logic, scoring rubric |
 | `references/report-sections.md` | Step 5 — what each section must contain, block schema |
+| `references/benchmarks.md` | Steps 4–5 — sourced benchmarks with confidence levels |
 | `assets/collect.js` | Step 2 — browser collector, pasted into the page |
 | `scripts/build_page_data.py` | Step 2 — assembles `page_data.json` from `raw/` |
 | `scripts/metrics.py` | Step 3 |

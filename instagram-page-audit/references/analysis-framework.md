@@ -39,8 +39,9 @@ How to turn `page_data.json` + `metrics.json` into findings, scores and actions.
 
 ## 2. Reading the numbers
 
-Benchmarks change every year and differ by niche and follower count. **Always use benchmarks
-from Step 4 web research, with the source in the report.** The ranges below are only a rough
+Benchmarks change every year and differ by niche and follower count. **Use the sourced figures
+in `references/benchmarks.md` (refresh by web search when stale), always with the source and its
+caveat in the report.** The ranges below are only a rough
 orientation for sanity checks and must not be quoted as facts:
 
 - ER by followers tends to fall as the account grows: small local accounts (< 10K) often sit

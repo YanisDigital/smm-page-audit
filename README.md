@@ -94,7 +94,8 @@ instagram-page-audit/
 ├── SKILL.md                    # workflow and rules Claude follows
 ├── references/
 │   ├── collection.md           # browser data collection, page_data.json schema
-│   ├── analysis-framework.md   # metric formulas, scoring rubric
+│   ├── analysis-framework.md   # metric formulas, scoring rubric, account types
+│   ├── benchmarks.md           # sourced benchmarks with confidence levels
 │   └── report-sections.md      # report sections and block schema
 ├── scripts/
 │   ├── build_page_data.py      # raw/ files -> page_data.json

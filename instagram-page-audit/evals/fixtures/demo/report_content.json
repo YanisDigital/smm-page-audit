@@ -39,11 +39,11 @@
       }
     ],
     "problems": [
-      "Reels охоплюють мало нових людей: медіана 1 197 переглядів при 4 120 підписниках (0,29×).",
-      "CTA лише в 12 % підписів — люди не знають, що робити далі.",
-      "Біо не відповідає на «де?» і «до котрої?» — це ж питання повторюються в коментарях.",
-      "Пауза 15 днів у вересні та в середньому 2 пости на тиждень.",
-      "Хайлайт «Літо 2025» застарів, немає «Відгуки» і «Як замовити»."
+      "[[fact]] Reels охоплюють мало нових людей: медіана 1 197 переглядів при 4 120 підписниках (0,29×).",
+      "[[hyp]] CTA лише в 12 % підписів — люди не знають, що робити далі.",
+      "[[hyp]] Біо не відповідає на «де?» і «до котрої?» — це ж питання повторюються в коментарях.",
+      "[[hyp]] Пауза 15 днів у вересні та в середньому 2 пости на тиждень.",
+      "[[hyp]] Хайлайт «Літо 2025» застарів, немає «Відгуки» і «Як замовити»."
     ],
     "quick_wins": [
       "Переписати біо: адреса, графік, CTA «Пиши КАВА в дірект».",
@@ -91,6 +91,53 @@
         },
         {
           "type": "collab_split"
+        },
+        {
+          "type": "chart",
+          "kind": "posts_per_month"
+        },
+        {
+          "type": "chart",
+          "kind": "reels_views"
+        },
+        {
+          "type": "chart",
+          "kind": "rubrics"
+        },
+        {
+          "type": "repeat_stop",
+          "repeat": [
+            {
+              "title": "Latte-art Reel",
+              "why": "[[fact]] 10 991 views, top post",
+              "url": "https://www.instagram.com/reel/DEMO003/"
+            },
+            {
+              "title": "POV Reels with a DM word",
+              "why": "[[fact]] 40 comments on DEMO007"
+            },
+            {
+              "title": "Seasonal menu posts",
+              "why": "[[hyp]] new items get saves"
+            }
+          ],
+          "stop": [
+            {
+              "title": "Captionless photos",
+              "why": "[[fact]] lowest ER in the sample"
+            },
+            {
+              "title": "Two-week gaps",
+              "why": "[[fact]] 14.96-day gap in the period"
+            },
+            {
+              "title": "Stock-like images",
+              "why": "[[hyp]] no faces, no reaction"
+            }
+          ]
+        },
+        {
+          "type": "competitors"
         }
       ]
     },

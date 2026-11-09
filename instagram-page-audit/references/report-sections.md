@@ -55,6 +55,13 @@ escaped as plain text.
 | `trend` | — | Auto: medians per month (posts, ER, likes, comments, Reels views) |
 | `rubrics` | — | Auto: the same per rubric, with share of posts |
 | `collab_split` | — | Auto: owned posts vs collabs |
+| `chart` | `kind`: `posts_per_month` / `trend_views` / `reels_views` / `rubrics` | Auto: inline SVG chart (one series, theme-aware, hover values, table view is the matching auto table) |
+| `repeat_stop` | `repeat`, `stop`: lists of `{ "title", "why", "url"? }` (≥ 3 each) | "Keep doing / Stop doing" panels, each item backed by data |
+| `competitors` | — | Auto: the page vs `competitors/*/metrics.json` (followers, posts/week, ER, Reels views, likes per view, Reels share, CTA share) |
+
+**Tags.** Any text field accepts `[[fact]]`, `[[hyp]]`, `[[est]]`, rendered as small badges
+(fact = from the data, hypothesis = interpretation to verify, estimate = calculation, benchmark
+or target). Every `summary.problems` item must contain one; use them in findings throughout.
 
 ## 3. Required sections (in this order)
 
@@ -63,6 +70,8 @@ Section 1 (summary & scorecard) is rendered from `summary`; the `sections` array
 **2. `stats` — Statistics & effectiveness**
 - `metrics`, `format_mix`, `trend`, `posts` top, `posts` bottom blocks; `rubrics` and
   `collab_split` when the data has rubrics or collabs.
+- ≥ 2 `chart` blocks and one `repeat_stop` block.
+- `competitors` block with a paragraph on what competitors do better or worse (when collected).
 - Paragraph/list: what the numbers mean vs sourced benchmarks (cite them).
 - Why top posts worked, why bottom posts failed (hook, topic, format).
 - Timing hint (weekday/hour) if the sample allows, with the caveat.
@@ -126,8 +135,8 @@ Section 1 (summary & scorecard) is rendered from `summary`; the `sections` array
 
 | Section | Minimum |
 |---|---|
-| summary | 6 scores, 3 problems, 3 quick wins |
-| stats | 2 `posts` blocks, 1 `trend` block |
+| summary | 6 scores, 3 problems (each with a tag), 3 quick wins |
+| stats | 2 `posts`, 1 `trend`, 2 `chart`, 1 `repeat_stop` (≥ 3 + 3 items) blocks |
 | audience | 2 segment cards |
 | strategy | 3 table rows (months), 2 `copy` blocks (name/bio) |
 | content_plan | one table with ≥ 12 rows |

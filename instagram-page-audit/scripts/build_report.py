@@ -7,6 +7,7 @@ validates report_content.json and writes report.html. Standard library only.
 import argparse
 import html
 import json
+import math
 import re
 import sys
 from datetime import datetime
@@ -28,13 +29,17 @@ BLOCK_FIELDS = {
     "trend": [],
     "rubrics": [],
     "collab_split": [],
+    "chart": ["kind"],
+    "repeat_stop": ["repeat", "stop"],
+    "competitors": [],
 }
+CHART_KINDS = ("posts_per_month", "trend_views", "reels_views", "rubrics")
 ACCOUNT_TYPES = ("local_business", "expert", "creator", "brand")
 
 # Minimum content per section, so a report is never thin. (block type, field, count):
 # "items" counts list/cards/checklist entries, "rows" counts table rows, "blocks" counts blocks.
 MINIMUMS = {
-    "stats": [("posts", "blocks", 2), ("trend", "blocks", 1)],
+    "stats": [("posts", "blocks", 2), ("trend", "blocks", 1), ("chart", "blocks", 2), ("repeat_stop", "blocks", 1)],
     "audience": [("cards", "items", 2)],
     "strategy": [("table", "rows", 3), ("copy", "blocks", 2)],
     "content_plan": [("table", "max_rows", 12)],
@@ -92,7 +97,7 @@ LABELS = {
         "copy": "Копіювати", "copied": "Скопійовано", "assumptions": "Припущення",
         "sources": "Джерела", "data_notes": "Обмеження даних", "collected": "Дані зібрано",
         "analyzed": "Проаналізовано постів",
-        "likes_views": "Лайки / перегляди Reels", "period": "Період", "rubric": "Рубрика", "group": "Група", "owned": "Власні пости", "collab": "Колаборації", "median_likes": "Медіана лайків", "median_views": "Медіана переглядів Reels", "account_type": "Тип акаунта", "account_types": {"local_business": "Локальний бізнес", "expert": "Експерт / послуги", "creator": "Блогер / креатор", "brand": "Великий бренд"}, "generated": "Звіт згенеровано", "contents": "Зміст",
+        "likes_views": "Лайки / перегляди Reels", "period": "Період", "rubric": "Рубрика", "group": "Група", "owned": "Власні пости", "collab": "Колаборації", "median_likes": "Медіана лайків", "median_views": "Медіана переглядів Reels", "account_type": "Тип акаунта", "tags": {"fact": "факт", "hyp": "гіпотеза", "est": "оцінка"}, "tags_legend": "Позначки: факт — з даних сторінки; гіпотеза — інтерпретація, яку варто перевірити; оцінка — розрахунок або орієнтир.", "repeat": "Повторювати", "stop": "Припинити", "account": "Акаунт", "reels_share": "Частка Reels", "posts_per_month": "Публікацій на місяць", "trend_views": "Медіана переглядів Reels по місяцях", "reels_views": "Перегляди кожного Reel (за датою)", "rubrics_share": "Частка рубрик, % публікацій", "no_competitors": "Дані конкурентів не зібрано.", "account_types": {"local_business": "Локальний бізнес", "expert": "Експерт / послуги", "creator": "Блогер / креатор", "brand": "Великий бренд"}, "generated": "Звіт згенеровано", "contents": "Зміст",
         "types": {"reel": "Reels", "carousel": "Карусель", "image": "Фото", "video": "Відео", "unknown": "Інше"},
     },
     "ru": {
@@ -108,7 +113,7 @@ LABELS = {
         "copy": "Копировать", "copied": "Скопировано", "assumptions": "Допущения",
         "sources": "Источники", "data_notes": "Ограничения данных", "collected": "Данные собраны",
         "analyzed": "Проанализировано постов",
-        "likes_views": "Лайки / просмотры Reels", "period": "Период", "rubric": "Рубрика", "group": "Группа", "owned": "Свои посты", "collab": "Коллаборации", "median_likes": "Медиана лайков", "median_views": "Медиана просмотров Reels", "account_type": "Тип аккаунта", "account_types": {"local_business": "Локальный бизнес", "expert": "Эксперт / услуги", "creator": "Блогер / креатор", "brand": "Крупный бренд"}, "generated": "Отчёт создан", "contents": "Содержание",
+        "likes_views": "Лайки / просмотры Reels", "period": "Период", "rubric": "Рубрика", "group": "Группа", "owned": "Свои посты", "collab": "Коллаборации", "median_likes": "Медиана лайков", "median_views": "Медиана просмотров Reels", "account_type": "Тип аккаунта", "tags": {"fact": "факт", "hyp": "гипотеза", "est": "оценка"}, "tags_legend": "Пометки: факт — из данных страницы; гипотеза — интерпретация, которую стоит проверить; оценка — расчёт или ориентир.", "repeat": "Повторять", "stop": "Прекратить", "account": "Аккаунт", "reels_share": "Доля Reels", "posts_per_month": "Публикаций в месяц", "trend_views": "Медиана просмотров Reels по месяцам", "reels_views": "Просмотры каждого Reel (по дате)", "rubrics_share": "Доля рубрик, % публикаций", "no_competitors": "Данные конкурентов не собраны.", "account_types": {"local_business": "Локальный бизнес", "expert": "Эксперт / услуги", "creator": "Блогер / креатор", "brand": "Крупный бренд"}, "generated": "Отчёт создан", "contents": "Содержание",
         "types": {"reel": "Reels", "carousel": "Карусель", "image": "Фото", "video": "Видео", "unknown": "Другое"},
     },
     "en": {
@@ -124,7 +129,7 @@ LABELS = {
         "copy": "Copy", "copied": "Copied", "assumptions": "Assumptions",
         "sources": "Sources", "data_notes": "Data limitations", "collected": "Data collected",
         "analyzed": "Posts analyzed",
-        "likes_views": "Likes / Reels views", "period": "Period", "rubric": "Rubric", "group": "Group", "owned": "Owned posts", "collab": "Collabs", "median_likes": "Median likes", "median_views": "Median Reels views", "account_type": "Account type", "account_types": {"local_business": "Local business", "expert": "Expert / services", "creator": "Creator", "brand": "Large brand"}, "generated": "Report generated", "contents": "Contents",
+        "likes_views": "Likes / Reels views", "period": "Period", "rubric": "Rubric", "group": "Group", "owned": "Owned posts", "collab": "Collabs", "median_likes": "Median likes", "median_views": "Median Reels views", "account_type": "Account type", "tags": {"fact": "fact", "hyp": "hypothesis", "est": "estimate"}, "tags_legend": "Tags: fact — from the page data; hypothesis — an interpretation to verify; estimate — a calculation or target.", "repeat": "Keep doing", "stop": "Stop doing", "account": "Account", "reels_share": "Reels share", "posts_per_month": "Posts per month", "trend_views": "Median Reels views by month", "reels_views": "Views of each Reel (by date)", "rubrics_share": "Rubric share, % of posts", "no_competitors": "No competitor data collected.", "account_types": {"local_business": "Local business", "expert": "Expert / services", "creator": "Creator", "brand": "Large brand"}, "generated": "Report generated", "contents": "Contents",
         "types": {"reel": "Reels", "carousel": "Carousel", "image": "Photo", "video": "Video", "unknown": "Other"},
     },
 }
@@ -144,10 +149,15 @@ def safe_url(url):
     return esc(url) if re.match(r"https?://", url, re.IGNORECASE) else "#"
 
 
+TAG_TEXT = dict(LABELS["en"]["tags"])   # replaced with the report language in build()
+TAG_RE = re.compile(r"\[\[(fact|hyp|est)\]\]")
+
+
 def rich(text):
-    """Escape text, then allow **bold** and line breaks."""
+    """Escape text, then allow **bold**, line breaks and [[fact]] / [[hyp]] / [[est]] tags."""
     out = esc(text)
     out = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", out)
+    out = TAG_RE.sub(lambda m: f'<span class="kt {m.group(1)}">{esc(TAG_TEXT[m.group(1)])}</span>', out)
     return out.replace("\n", "<br>")
 
 
@@ -197,6 +207,17 @@ def validate(content):
                 for k, row in enumerate(block.get("rows") or []):
                     if len(row) != width:
                         errors.append(f"{where}.blocks[{j}] row {k}: {len(row)} cells, expected {width}.")
+    for i, item in enumerate(summary.get("problems") or []):
+        if not TAG_RE.search(str(item)):
+            errors.append(f"summary.problems[{i}]: add a [[fact]], [[hyp]] or [[est]] tag.")
+    for section in content["sections"]:
+        for block in section.get("blocks") or []:
+            if block.get("type") == "chart" and block.get("kind") not in CHART_KINDS:
+                errors.append(f"{section.get('id')}: chart kind must be one of {', '.join(CHART_KINDS)}.")
+            if block.get("type") == "repeat_stop":
+                for key in ("repeat", "stop"):
+                    if len(block.get(key) or []) < 3:
+                        errors.append(f"{section.get('id')}: repeat_stop.{key} needs ≥ 3 items.")
     missing = [s for s in REQUIRED_SECTIONS if s not in ids]
     if missing:
         errors.append("Missing required sections: " + ", ".join(missing))
@@ -283,7 +304,128 @@ def render_posts(metrics, which, L):
     return f'<div class="table-wrap"><table><thead>{head}</thead><tbody>{"".join(rows)}</tbody></table></div>'
 
 
-def render_block(block, metrics, L):
+def nice_max(value):
+    """Round an axis maximum up to a readable step (1, 1.5, 2, 2.5, 3, 4, 5, 6, 8 × 10^n)."""
+    if not value or value <= 0:
+        return 1
+    exp = 10 ** math.floor(math.log10(value))
+    return next(m * exp for m in (1, 1.5, 2, 2.5, 3, 4, 5, 6, 8, 10) if m * exp >= value)
+
+
+def bar_path(x, y, w, h, horizontal=False):
+    """A bar with 4px rounded data end, square at the baseline."""
+    r = min(4, h if not horizontal else w, (w if not horizontal else h) / 2)
+    if horizontal:
+        return (f"M{x:.1f},{y:.1f} H{x + w - r:.1f} Q{x + w:.1f},{y:.1f} {x + w:.1f},{y + r:.1f} "
+                f"V{y + h - r:.1f} Q{x + w:.1f},{y + h:.1f} {x + w - r:.1f},{y + h:.1f} H{x:.1f} Z")
+    return (f"M{x:.1f},{y + h:.1f} V{y + r:.1f} Q{x:.1f},{y:.1f} {x + r:.1f},{y:.1f} "
+            f"H{x + w - r:.1f} Q{x + w:.1f},{y:.1f} {x + w:.1f},{y + r:.1f} V{y + h:.1f} Z")
+
+
+def svg_columns(points, title, label_top=1):
+    """Single-series column chart: points = [(label, value)]. Labels the top `label_top` values."""
+    points = [(lab, v) for lab, v in points if v is not None]
+    if not points:
+        return ""
+    W, H, left, right, top, bottom = 640, 220, 52, 12, 22, 34
+    pw, ph = W - left - right, H - top - bottom
+    vmax = nice_max(max(v for _, v in points))
+    band = pw / len(points)
+    bw = max(3, min(28, band - 2))
+    every = max(1, math.ceil(len(points) / 10))
+    tops = sorted(range(len(points)), key=lambda i: -points[i][1])[:label_top]
+    parts = [f'<line class="grid" x1="{left}" x2="{W - right}" y1="{top + ph}" y2="{top + ph}"/>',
+             f'<line class="grid soft" x1="{left}" x2="{W - right}" y1="{top}" y2="{top}"/>',
+             f'<text x="{left - 6}" y="{top + 4}" text-anchor="end">{esc(num(vmax))}</text>',
+             f'<text x="{left - 6}" y="{top + ph + 4}" text-anchor="end">0</text>']
+    for i, (lab, v) in enumerate(points):
+        h = max(1, v / vmax * ph)
+        x = left + i * band + (band - bw) / 2
+        y = top + ph - h
+        parts.append(f'<g class="mark"><rect class="hit" x="{left + i * band:.1f}" y="{top}" width="{band:.1f}" height="{ph}"/>'
+                     f'<path class="bar" d="{bar_path(x, y, bw, h)}"/><title>{esc(lab)}: {esc(num(v))}</title></g>')
+        if i in tops:
+            parts.append(f'<text class="val" x="{x + bw / 2:.1f}" y="{y - 5:.1f}" text-anchor="middle">{esc(num(v))}</text>')
+        if i % every == 0:
+            parts.append(f'<text x="{x + bw / 2:.1f}" y="{H - 12}" text-anchor="middle">{esc(lab)}</text>')
+    return (f'<figure class="chart"><figcaption>{esc(title)}</figcaption>'
+            f'<svg viewBox="0 0 {W} {H}" role="img" aria-label="{esc(title)}">{"".join(parts)}</svg></figure>')
+
+
+def svg_rows(points, title, suffix="%"):
+    """Single-series horizontal bars: points = [(label, value)]."""
+    points = [(lab, v) for lab, v in points if v is not None]
+    if not points:
+        return ""
+    row, left, right, top = 30, 170, 56, 6
+    W, H = 640, top * 2 + row * len(points)
+    pw = W - left - right
+    vmax = max(v for _, v in points) or 1
+    parts = []
+    for i, (lab, v) in enumerate(points):
+        y = top + i * row + 6
+        w = max(2, v / vmax * pw)
+        short = lab if len(lab) <= 26 else lab[:25] + "…"
+        parts.append(f'<g class="mark"><text x="{left - 8}" y="{y + 13}" text-anchor="end">{esc(short)}</text>'
+                     f'<path class="bar" d="{bar_path(left, y, w, row - 12, horizontal=True)}"/>'
+                     f'<text class="val" x="{left + w + 6:.1f}" y="{y + 13}">{esc(f"{v:g}")}{suffix}</text>'
+                     f'<title>{esc(lab)}: {esc(f"{v:g}")}{suffix}</title></g>')
+    return (f'<figure class="chart"><figcaption>{esc(title)}</figcaption>'
+            f'<svg viewBox="0 0 {W} {H}" role="img" aria-label="{esc(title)}">{"".join(parts)}</svg></figure>')
+
+
+def month_label(m):
+    return f"{m[5:7]}.{m[2:4]}" if len(m) == 7 else m
+
+
+def render_chart(kind, metrics, page, L):
+    trend = metrics.get("trend") or {}
+    if kind == "posts_per_month":
+        return svg_columns([(month_label(m), g.get("count")) for m, g in trend.items()], L["posts_per_month"])
+    if kind == "trend_views":
+        return svg_columns([(month_label(m), g.get("median_reel_views")) for m, g in trend.items()], L["trend_views"])
+    if kind == "reels_views":
+        reels = sorted((p for p in page.get("posts") or [] if p.get("type") == "reel" and p.get("views") is not None),
+                       key=lambda p: p.get("date") or "")
+        pts = [(f'{(p.get("date") or "")[8:10]}.{(p.get("date") or "")[5:7]}.{(p.get("date") or "")[2:4]}', p["views"]) for p in reels]
+        return svg_columns(pts, L["reels_views"], label_top=2)
+    if kind == "rubrics":
+        return svg_rows([(name, g.get("share_pct")) for name, g in (metrics.get("rubrics") or {}).items()], L["rubrics_share"])
+    return ""
+
+
+def render_repeat_stop(block, L):
+    def items(entries):
+        out = []
+        for e in entries:
+            link = f' <a href="{safe_url(e["url"])}" target="_blank" rel="noopener">{L["open"]}</a>' if e.get("url") else ""
+            out.append(f'<li><strong>{rich(e.get("title", ""))}</strong>{link}<br>{rich(e.get("why", ""))}</li>')
+        return "".join(out)
+    return (f'<div class="two-col"><div class="panel good"><h3>{esc(L["repeat"])}</h3><ol>{items(block["repeat"])}</ol></div>'
+            f'<div class="panel warn"><h3>{esc(L["stop"])}</h3><ol>{items(block["stop"])}</ol></div></div>')
+
+
+def competitor_row(metrics, bold=False):
+    e, r, c, p = metrics["engagement"], metrics["reels"], metrics["cadence"], metrics["profile"]
+    reel_share = (metrics.get("format_mix") or {}).get("reel", {}).get("share_pct")
+    name = esc("@" + (p.get("handle") or "?"))
+    cells = [f"<strong>{name}</strong>" if bold else name, num(p.get("followers")), num(c.get("posts_per_week"), 1),
+             pct(e.get("er_followers_median")), num(r.get("median_views")), num(r.get("views_to_followers"), 2),
+             pct(r.get("likes_per_view_median")), pct(reel_share), pct(metrics["captions"].get("pct_with_cta"))]
+    return "<tr>" + "".join(f'<td{"" if i == 0 else " class=num"}>{v}</td>' for i, v in enumerate(cells)) + "</tr>"
+
+
+def render_competitors(metrics, competitors, L):
+    if not competitors:
+        return f'<p class="lead">{esc(L["no_competitors"])}</p>'
+    head = "".join(f"<th>{esc(h)}</th>" for h in (L["account"], L["followers"], L["posts_week"], L["er_median"],
+                   L["reels_views"], L["views_followers"], L["likes_views"], L["reels_share"], L["cta"]))
+    rows = competitor_row(metrics, bold=True) + "".join(competitor_row(m) for m in competitors)
+    return f'<div class="table-wrap"><table><thead><tr>{head}</tr></thead><tbody>{rows}</tbody></table></div>'
+
+
+def render_block(block, metrics, L, ctx=None):
+    ctx = ctx or {}
     t = block["type"]
     if t == "paragraph":
         return f"<p>{rich(block['text'])}</p>"
@@ -326,6 +468,12 @@ def render_block(block, metrics, L):
     if t == "collab_split":
         split = metrics.get("collab_split") or {}
         return render_groups({L[k]: split[k] for k in ("owned", "collab") if k in split}, L["group"], L)
+    if t == "chart":
+        return render_chart(block["kind"], metrics, ctx.get("page") or {}, L)
+    if t == "repeat_stop":
+        return render_repeat_stop(block, L)
+    if t == "competitors":
+        return render_competitors(metrics, ctx.get("competitors") or [], L)
     return ""
 
 
@@ -343,6 +491,7 @@ def render_summary(content, L):
     return f'''<section id="summary"><h2><span class="sec-n">1</span>{esc(L["summary"])}</h2>
 <div class="verdict"><div class="overall"><div class="overall-value">{overall:.1f}</div>
 <div class="overall-label">{esc(L["overall"])} / 10</div></div><p>{rich(s["verdict"])}</p></div>
+<p class="legend">{rich("[[fact]] [[hyp]] [[est]]")} {esc(L["tags_legend"])}</p>
 <div class="scores">{bars}</div>
 <div class="two-col"><div class="panel warn"><h3>{esc(L["problems"])}</h3><ol>{problems}</ol></div>
 <div class="panel good"><h3>{esc(L["quick_wins"])}</h3><ol>{wins}</ol></div></div></section>'''
@@ -360,6 +509,14 @@ def build(audit_dir, out_path):
     validate(content)
     lang = content.get("language", "uk")
     L = LABELS.get(lang, LABELS["en"])
+    TAG_TEXT.update(L["tags"])
+    competitors = []
+    for path in sorted((audit_dir / "competitors").glob("*/metrics.json")):
+        try:
+            competitors.append(json.loads(path.read_text(encoding="utf-8")))
+        except (OSError, json.JSONDecodeError) as exc:
+            print(f"WARNING: skipped {path}: {exc}")
+    ctx = {"page": page, "competitors": competitors}
     profile = page.get("profile") or {}
     handle = profile.get("handle") or "instagram"
     title = content.get("title") or f"Instagram @{handle}"
@@ -370,7 +527,7 @@ def build(audit_dir, out_path):
         sid = esc(section["id"])
         nav.append(f'<a href="#{sid}">{n}. {esc(section["title"])}</a>')
         intro = f'<p class="lead">{rich(section["intro"])}</p>' if section.get("intro") else ""
-        blocks = "".join(render_block(b, metrics, L) for b in section["blocks"])
+        blocks = "".join(render_block(b, metrics, L, ctx) for b in section["blocks"])
         body.append(f'<section id="{sid}"><h2><span class="sec-n">{n}</span>{esc(section["title"])}</h2>{intro}{blocks}</section>')
 
     notes = list(metrics.get("warnings") or []) + list(page.get("notes") or [])
